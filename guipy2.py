@@ -11,14 +11,28 @@ def printRoute():
     # os.system('route print')
     # output = subprocess.check_output('route print', shell=True)
     # add new function to refine the output
-    output = subprocess.check_output('route print', stderr=subprocess.STDOUT, text=True)
+    output = subprocess.check_output(
+        'route print', stderr=subprocess.STDOUT, text=True)
     # output = subprocess.run('dir',shell=True)
     # text1 = output.find('Persistent Routes:') # find() outputs -1 value if the string is not found
     # text2 = output.find('=', text1)
-    text1 = output.index("Persistent Routes:")  # index() throw error if the string is not found
+    # index() throw error if the string is not found
+    text1 = output.index("Persistent Routes:")
     text2 = output.index("=", text1)
     # print(output.count("Routes"))
-    print(output[text1: text2])
+    op_str_split = output[text1: text2].split()
+    op_iter = iter(op_str_split)
+    op_len = len(op_str_split)
+    print(f"{next(op_iter)} {next(op_iter)}")
+    print("=================================================================")
+    print(f"{next(op_iter)} {next(op_iter):<12}{next(op_iter):>12}\t{next(op_iter)} {next(op_iter):>9}\t{next(op_iter):^9}")
+    print("=================================================================")
+    for i in range((op_len-8)//4):
+        print(
+            f"{next(op_iter):>12}\t{next(op_iter):>16}\t{next(op_iter):>16}\t{next(op_iter):^10}")
+
+    print("=================================================================")
+    # print(output[text1: text2])
     # print(str(output))
     # if 'Persistent Routes:' in output:
     #    print("string is present")
@@ -28,12 +42,14 @@ def createRoute(IP, site):
     routeCommand = 'route -p add ' + IP + '.0.0 mask 255.255.0.0 ' + IP + '.40.254'
     # os.system(routeCommand) # this will simply send the string as command to cmd prompt
     # output = subprocess.check_output(routeCommand, shell=True)
-    output = subprocess.check_output(routeCommand, stderr=subprocess.STDOUT, text=True)
+    output = subprocess.check_output(
+        routeCommand, stderr=subprocess.STDOUT, text=True)
     # text=True will make the output into string format
     # print(output)
     if output.find("OK!") != -1:
         # print("Persistent Route for {} is created!".format(site))
-        print(f"Persistent Route for {site} is created!")  # this method is using fstring, add f infront of
+        # this method is using fstring, add f infront of
+        print(f"Persistent Route for {site} is created!")
         # quotes
     elif output.find("The route addition failed") != -1:
         # print("Persistent Route for {} already exist!".format(site))
@@ -41,10 +57,12 @@ def createRoute(IP, site):
 
 
 def deleteRoute(IP, site):
-    routeCommand = 'route -p delete ' + IP + '.0.0 mask 255.255.0.0 ' + IP + '.40.254'
+    routeCommand = 'route -p delete ' + IP + \
+        '.0.0 mask 255.255.0.0 ' + IP + '.40.254'
     # os.system(routeCommand)
     # output = subprocess.check_output(routeCommand, shell=True)
-    output = subprocess.check_output(routeCommand, stderr=subprocess.STDOUT, text=True)
+    output = subprocess.check_output(
+        routeCommand, stderr=subprocess.STDOUT, text=True)
     # print(output)
     if output.find("OK!") != -1:
         print("Persistent Route for {} is deleted!".format(site))
@@ -53,14 +71,16 @@ def deleteRoute(IP, site):
 
 
 def clearAllRoute():
-    output = subprocess.check_output('route print', stderr=subprocess.STDOUT, text=True) # text=True will change the
+    output = subprocess.check_output(
+        'route print', stderr=subprocess.STDOUT, text=True)  # text=True will change the
     # datatype of output from bytes to string
 
     text1 = output.find('Default')
     text2 = output.find('=', text1)
     Proutes = output[text1 + 9:text2]
     Sroute = Proutes.split()
-    Qroute = Sroute[::4]  # leave start index and stop index blank and give step size of 4
+    # leave start index and stop index blank and give step size of 4
+    Qroute = Sroute[::4]
     # print(Proutes)
     # print(Qroute)
     for q in Qroute:
@@ -84,10 +104,13 @@ for row in csvreader:
 sg.theme('Default1')  # Add a touch of color
 # All the stuff inside your window.
 layout = [
-    [sg.Text('Select Site Name'), sg.DropDown([l[0] for l in IPscheme], key='-SITE-', default_value=IPscheme[0][0])],
-    [sg.Button('Create Route'), sg.Button('Delete Route'), sg.Button('Print Route')],
+    [sg.Text('Select Site Name'), sg.DropDown([l[0]
+                                               for l in IPscheme], key='-SITE-', default_value=IPscheme[0][0])],
+    [sg.Button('Create Route'), sg.Button(
+        'Delete Route'), sg.Button('Print Route')],
     [sg.Button('Clear All Route'), sg.Button('Cancel')],
-    [sg.Multiline("", size=(80, 20), autoscroll=True, reroute_stdout=True, reroute_stderr=True, key='-OUTPUT-')]
+    [sg.Multiline("", size=(80, 20), autoscroll=True,
+                  reroute_stdout=True, reroute_stderr=True, key='-OUTPUT-')]
 ]
 
 # Create the Window

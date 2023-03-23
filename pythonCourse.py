@@ -92,12 +92,12 @@
 # newfile.close()
 # newfile = open(r"C:\Users\Mohammed Iris\PycharmProjects\myPythonExperiments\sample.txt","r")
 # print(newfile.readlines())
-# with open(r"C:\Users\Mohammed Iris\PycharmProjects\myPythonExperiments\sample.txt","a+") as readFile:
-#
-#     print(readFile.read())
-#     readFile.write("this is my second line \n ")
-#     readFile.seek(0)
-#     print(str(readFile.read()))
+with open(r"C:\Users\Mohammed Iris\PycharmProjects\myPythonExperiments\udemy_app1\ip_file.txt", "a+") as readFile:
+
+    print(readFile.read())
+    #readFile.write("this is my second line \n ")
+    readFile.seek(0)
+    print(str(readFile.read()))
 #
 # import re
 #
@@ -109,6 +109,7 @@
 #     print("no match found")
 
 
-a= lambda x:[x for x in range(10)]+x
+# def a(x): return [x for x in range(10)]+x
 
-print(a([2,3,4]))
+
+# print(a([2, 3, 4]))
