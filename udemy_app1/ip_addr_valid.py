@@ -1,6 +1,7 @@
 import sys
 
 def ip_addr_valid(iplist):
+    os.chdir(r"D:\MyPyCodes\myPythonExperiments\udemy_app1") 
     for ip in iplist:
         ip = ip.rstrip("\n")
         octet_list = ip.split('.')
